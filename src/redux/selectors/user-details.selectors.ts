@@ -1,4 +1,3 @@
-// src/app/store/selectors/user.selectors.ts
 
 import { createSelector } from '@ngrx/store';
 import { AppState } from '../reducers';

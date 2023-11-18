@@ -1,4 +1,4 @@
-import { UserState } from '../states/user-details.state'; // Make sure this path is correct
+import { UserState } from '../states/user-details.state';
 import {
   CustomerDetailsActionTypes,
   CustomerDetailsAction,
@@ -17,8 +17,8 @@ function getInitialState(): UserState {
           url:'',
 text:'',  
         }
-    },  // Assuming userList is an array of users
-    selectedUser: null,  // Changed from undefined to null
+    }, 
+    selectedUser: null,
     loading: false,
     error: null,
   };
@@ -37,7 +37,7 @@ export function UserReducer(
         loading: true,
         error: null
       };
-    // Implement the success and failure actions once defined
+
     case CustomerDetailsActionTypes.VIEW_USER:
       const selectedUser = state.userList?.data.find(user => user.id === action.userId.id);
       return {

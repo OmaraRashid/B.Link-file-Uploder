@@ -3,7 +3,6 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="text-center my-5">
         <div class="form-group mb-4">
           <input type="text" formControlName="username" class="form-control rounded-pill form-control-lg" placeholder="Username" id="username">
-        <!-- Inside your form, below each input -->
 <div *ngIf="loginForm.get('username')?.errors && loginForm.get('username')?.touched" class="alert alert-danger">
     Username is required.
   </div>

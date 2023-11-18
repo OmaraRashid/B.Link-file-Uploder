@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { auth_token_key } from '../constants/defines';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class DisableDeepLinkGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const authToken = localStorage.getItem('authToken');
+    const authToken = localStorage.getItem(auth_token_key);
 
     if (authToken) {
       return true;

@@ -48,8 +48,7 @@ describe('ListUsersComponent', () => {
       if (selector === selectAllUsers) {
         return of({ data: mockUsers });
       } else if (typeof selector === 'function') {
-        // Mocking selectUserById
-        return of(mockUsers[0]); // Adjust as needed
+        return of(mockUsers[0]); 
       }
       return of();
     });

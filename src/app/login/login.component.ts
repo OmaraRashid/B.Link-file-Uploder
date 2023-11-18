@@ -24,8 +24,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Add this inside LoginComponent
-
 onSubmit(): void {
   if (this.loginForm.valid) {
     this.store.dispatch(new LoginRequest(this.loginForm.value));

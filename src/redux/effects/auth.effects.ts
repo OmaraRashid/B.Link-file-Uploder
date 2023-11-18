@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AuthService } from '../../app/core/authentication/auth.service'; // Import your actual auth service
+import { AuthService } from '../../app/core/authentication/auth.service';
 import { LoginActionTypes, LoginRequest, LoginSuccess, LoginFailure } from '../actions/auth.actions';
 import { of } from 'rxjs';
 import { catchError, map, exhaustMap, switchMap, tap } from 'rxjs/operators';

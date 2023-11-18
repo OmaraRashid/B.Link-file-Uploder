@@ -32,6 +32,6 @@ export class UserEffects {
 
   constructor(
     private actions$: Actions,
-    private userService: UserService // Make sure you have this service implemented
+    private userService: UserService
   ) {}
 }
