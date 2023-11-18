@@ -9,7 +9,6 @@ const routes: Routes = [
     path: 'users',
     loadChildren: () => import('./user-managment/user-management.module').then(m => m.UserManagementModule)
   }
-  // ... other routes
 ];
 
 @NgModule({

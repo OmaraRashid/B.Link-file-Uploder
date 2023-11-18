@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { take } from 'rxjs';
+import { LoginRequest } from 'src/redux/actions/auth.actions';
+import { AppState } from 'src/redux/reducers';
+import { selectAllUsers } from 'src/redux/selectors/user-details.selectors';
 import { AuthService } from '../core/authentication/auth.service';
 
 @Component({
@@ -10,7 +15,7 @@ import { AuthService } from '../core/authentication/auth.service';
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
 
-  constructor( private auth: AuthService ) { }
+  constructor( private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -23,14 +28,7 @@ export class LoginComponent implements OnInit {
 
 onSubmit(): void {
   if (this.loginForm.valid) {
-    this.auth.login(this.loginForm.value).subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-      error: (error) => {
-        // Handle the error
-      }
-    });
+    this.store.dispatch(new LoginRequest(this.loginForm.value));
   }
 }
 

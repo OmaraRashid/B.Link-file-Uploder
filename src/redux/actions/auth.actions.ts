@@ -1,28 +1,27 @@
-import { Action } from "@ngrx/store";
+// login.actions.ts
+import { Action } from '@ngrx/store';
+import { UserCredentials } from '../../app/core/model/userCredentails.model';
 
-export enum UserActionTypes {
-    LOGIN = '[User] Login',
-    LOGIN_SUCCESS = '[User] Login Success',
-    LOGIN_FAILURE = '[User] Login Failure',
-  }
-  
-  export class Login implements Action {
-    readonly type = UserActionTypes.LOGIN;
-    constructor(public payload: { username: string; password: string }) {}
-  }
-  
-  export class LoginSuccess implements Action {
-    readonly type = UserActionTypes.LOGIN_SUCCESS;
-    constructor(public payload: { token: string }) {}
-  }
-  
-  export class LoginFailure implements Action {
-    readonly type = UserActionTypes.LOGIN_FAILURE;
-    constructor(public payload: { error: string }) {}
-  }
-  
-  export type UserActions = 
-    | Login
-    | LoginSuccess
-    | LoginFailure;
-  
+export enum LoginActionTypes {
+  LOGIN_REQUEST = '[Login] Login Request',
+  LOGIN_SUCCESS = '[Login] Login Success',
+  LOGIN_FAILURE = '[Login] Login Failure',
+  // Add more actions as needed
+}
+
+export class LoginRequest implements Action {
+  readonly type = LoginActionTypes.LOGIN_REQUEST;
+  constructor(public payload: UserCredentials) {}
+}
+
+export class LoginSuccess implements Action {
+  readonly type = LoginActionTypes.LOGIN_SUCCESS;
+  constructor(public payload: { token: string }) {}
+}
+
+export class LoginFailure implements Action {
+  readonly type = LoginActionTypes.LOGIN_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export type LoginActions = LoginRequest | LoginSuccess | LoginFailure;

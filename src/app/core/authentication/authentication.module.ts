@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './auth.gurad';
+import { DisableDeepLinkGuard } from './auth.gurad';
+import { AuthService } from './auth.service';
 
 
 /** modules  */
@@ -8,9 +9,8 @@ import { AuthService } from './auth.gurad';
     imports: [CommonModule],
     providers: [
         AuthService,
+        DisableDeepLinkGuard,
     ],
 })
 /** AuthModule */
-export class AuthModule {
-
-}
+export class AuthModule {}
