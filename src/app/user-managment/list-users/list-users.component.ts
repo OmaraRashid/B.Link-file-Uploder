@@ -1,14 +1,14 @@
-// list-users.component.ts
 import { Component, HostListener, OnInit } from '@angular/core';
-import { UserService } from '../user-managment.service';
-import { User } from '../../core/model/user.details.model';
-import { AppState } from 'src/redux/reducers';
-import { Store } from '@ngrx/store';
-import { selectAllUsers, selectUserById } from 'src/redux/selectors/user-details.selectors';
-import { take } from 'rxjs';
-import { CreateUser, EditUser } from 'src/redux/actions/user-details.actions';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { take } from 'rxjs';
+
+import { AuthService } from 'src/app/core/authentication/auth.service';
+import { AppState } from 'src/redux/reducers';
+import { CreateUser, EditUser } from 'src/redux/actions/user-details.actions';
+import { selectAllUsers, selectUserById } from 'src/redux/selectors/user-details.selectors';
 import { UserDialogComponent } from '../edit-create-user/edit-create-user.component';
+import { User } from '../../core/model/user.details.model';
 
 @Component({
   selector: 'app-list-users',
@@ -17,53 +17,57 @@ import { UserDialogComponent } from '../edit-create-user/edit-create-user.compon
 })
 export class ListUsersComponent implements OnInit {
   users: User[] = [];
-  currentPage: number = 1;
-  isLastPage: boolean = false;
+  currentPage = 1;
+  isLastPage = false;
 
-  constructor(private store: Store<AppState>,private dialog: MatDialog ) {}
+  constructor(
+    private store: Store<AppState>,
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
-  @HostListener('scroll', ['$event'])
-  onScroll(event: any): void {
-    console.log("hello");
-    // Check if we're at the bottom of the element
-    if (event.target.offsetWidth + event.target.scrollLeft >= event.target.scrollWidth) {
-      if (!this.isLastPage) {
-        this.loadMoreUsers();
-      }
+  @HostListener('window:scroll', ['$event'])
+  onScroll(): void {
+    if (this.isBottomOfPage() && !this.isLastPage) {
+      this.loadMoreUsers();
     }
   }
 
+  private isBottomOfPage(): boolean {
+    return window.innerHeight + window.scrollY >= document.body.offsetHeight;
+  }
+
   loadUsers(): void {
-   this.store.select(selectAllUsers,take(1)).subscribe((users) =>   this.users = users?.data || []);
+    this.store.select(selectAllUsers, take(1)).subscribe(users => {
+      if (users && users.data.length) {
+        this.users = users.data;
+      } else {
+        this.authService.logout();
+      }
+    });
   }
 
   loadMoreUsers(): void {
+    // Implement the logic to load more users
     this.currentPage++;
-    // this.store.dispatch(new loadUsers(this.users));
-    // this.userService.getUsers(this.currentPage).subscribe(response => {
-    //   this.users = this.users.concat(response.data);
-    //   this.isLastPage = this.currentPage === response.total_pages;
-    // });
+    // Dispatch action or call service
   }
 
-
-
-  deleteUser(userId: number) {
-    // Logic to delete the user
+  deleteUser(userId: number): void {
+    // Implement deletion logic
   }
 
-  viewUser(userId: number) {
-    const userSelector = selectUserById(userId);
-    this.store.select(userSelector).pipe(take(1)).subscribe((user) => {
-        console.log(user);
+  viewUser(userId: number): void {
+    this.store.select(selectUserById(userId), take(1)).subscribe(user => {
+      console.log(user);
     });
-}
+  }
 
-  openDialog(user?: any): void {
+  openDialog(user?: User): void {
     const dialogRef = this.dialog.open(UserDialogComponent, {
       width: '250px',
       data: user
@@ -71,20 +75,24 @@ export class ListUsersComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        if (user) {
-          this.store.dispatch (new EditUser(user,result));
-        } else {
-          this.store.dispatch (new CreateUser(result));
-        }
+        this.handleDialogResult(user, result);
       }
     });
   }
 
-  createUser() {
+  private handleDialogResult(user: User | undefined, result: any): void {
+    if (user) {
+      this.store.dispatch(new EditUser(user.id, result));
+    } else {
+      this.store.dispatch(new CreateUser(result));
+    }
+  }
+
+  createUser(): void {
     this.openDialog();
   }
 
-  editUser(user: any) {
+  editUser(user: User): void {
     this.openDialog(user);
   }
 }

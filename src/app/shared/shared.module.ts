@@ -4,7 +4,7 @@ import { NavigationComponent } from './nav/nav.component';
 
 @NgModule({
   declarations: [NavigationComponent],
-  imports: [CommonModule],
+  imports: [CommonModule ],
   exports: [NavigationComponent]
 })
 export class SharedModule {}

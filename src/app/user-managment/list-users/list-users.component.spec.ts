@@ -1,17 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Store, StoreModule } from '@ngrx/store';
 import { of } from 'rxjs';
 
 import { ListUsersComponent } from './list-users.component';
 import { selectAllUsers, selectUserById } from 'src/redux/selectors/user-details.selectors';
 import { User } from '../../core/model/user.details.model';
+import { AuthService } from 'src/app/core/authentication/auth.service';
 
 describe('ListUsersComponent', () => {
   let component: ListUsersComponent;
   let fixture: ComponentFixture<ListUsersComponent>;
   let store: Store;
   let mockUsers: User[];
+  let mockDialog;
+  let mockAuthService;
 
   beforeEach(async () => {
     // Prepare mock data
@@ -25,7 +28,8 @@ describe('ListUsersComponent', () => {
         },
       ];
       
-
+      mockDialog = jasmine.createSpyObj('MatDialog', ['open']);
+      mockAuthService = jasmine.createSpyObj('AuthService', ['logout']);
     await TestBed.configureTestingModule({
       declarations: [ListUsersComponent],
       imports: [
@@ -33,6 +37,8 @@ describe('ListUsersComponent', () => {
         MatDialogModule
       ],
       providers: [
+        { provide: MatDialog, useValue: mockDialog },
+        { provide: AuthService, useValue: mockAuthService }
       ]
     }).compileComponents();
 
