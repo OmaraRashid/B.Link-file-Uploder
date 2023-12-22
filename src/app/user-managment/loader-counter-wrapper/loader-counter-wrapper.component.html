@@ -1,0 +1,13 @@
+
+<div class="container my-4">
+  <app-file-loader (fileContent)="onFileLoaded($event)"></app-file-loader>
+  <app-word-count *ngIf="content; else noUsersTemplate" [text]="content"></app-word-count>
+</div>
+
+<ng-template #noUsersTemplate>
+  <mat-card>
+    <mat-card-content class="alert alert-warning">
+      No Text in this file
+    </mat-card-content>
+  </mat-card>
+</ng-template>

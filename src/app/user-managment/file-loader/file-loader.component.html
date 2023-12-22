@@ -1,0 +1,23 @@
+<div class="container my-3">
+  <!-- File Input without mat-form-field -->
+  <div class="mb-3">
+    <label for="fileInput" class="form-label">Upload .txt File</label>
+    <input id="fileInput" type="file" (change)="onFileChange($event)" accept=".txt" class="form-control">
+  </div>
+
+  <!-- Bootstrap Alert for Error Message -->
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+</div>
+
+
+
+<!-- Angular Material Card for No Content Template -->
+<ng-template #noUsersTemplate>
+  <mat-card>
+    <mat-card-content class="alert alert-warning">
+      No Text in this file
+    </mat-card-content>
+  </mat-card>
+</ng-template>
